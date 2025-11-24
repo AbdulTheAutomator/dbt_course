@@ -5,4 +5,5 @@
 - [ ] What is horizon catalog in snowflake?
 - [ ] External tables to <u>be sent to snowflake with dbt</u>
 - [ ] `raw_reviews:` make some changes and make a model
+- [x] Version control it
 

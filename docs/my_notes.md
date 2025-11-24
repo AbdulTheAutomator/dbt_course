@@ -150,5 +150,23 @@ models:
 * The real point of referring to table itself? 
   * Signifies a transformation step
   * Only need to change in CTE definition if source table changes instead of hunting every occurrence of source name. That would indeed be a big pain.
-* 
+
+# Materializations
+
+* View
+  * Lightweight
+  * Don't want to recreate table at every execution
+  * View is just a select which is executed behind the hood
+* Table
+  * Every time dbt flow is executed the table is recreated
+  * Transformed data is there
+* Incremental:
+  * Still table but for event data e.g. reviews
+  * Avoids recreating new table but ingests new data
+* Ephemeral (CTE)
+  * Converted to CTE in downstream model
+  * It won't be in data warehouse per say
+  * This is intermediate > not published or public to warehouse
+
+# Core layer
 
