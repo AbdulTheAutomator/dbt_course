@@ -1,27 +1,30 @@
-# Secrets
+# DBT modelling layers
 
-```bash
-#snowflake
-ABDUL1337
-[abdulwasay@myyahoo.com](mailto:abdulwasay@myyahoo.com)
-https://umgjozl-bt58923.snowflakecomputing.com
-J3Y6pTGu7Gf7pmx
-```
+* **Source layer**: raw tables defined as sources e.g. `src_*`
+* **Staging layer**: cleaned and tranformed, often prefixed with `stg_*`
+* **Mart layer**: business logic, aggregations, and models ready for analysis or reportnig.
 
+# DBT is designed to setup broad rules and then override with specific exceptions in source file
 
+- dbt is designed to let you set broad defaults and then override them at more specific levels when needed. This makes your project flexible and adaptable to different environments or requirements.
+  - `dbt_project.yml`: Defaults can be overridden by configs in individual model files (using Jinja `{{ config(...) }}`).
+  - `profiles.yml`: Settings here can be overridden by environment variables or CLI arguments (like `--target` or `--profile`).
 
 # Using instructor's streamlit app to setup snowflake warehouse
 
-
+* {missing information skipped in tutorial}
 
 # dbt project setup
 
-- Create a virtual environment
-- `dbt debug` will tell us if the whole file system is consistent.
-  - If file structure is consistent
-  - Forms part of pre-check after `dbt init`. But we used `dbt init --skip-profile=setup <our_prjo_name>`
-- `profiles.yml` should be added to `gitignore` or in our case vault.
-- `profiles.yml` for this _demo_ purposes is copied into default location`airbnb/profiles.yml`
+- Create a virtual environment.
+  - I added my own setup with `pipenv shell`
+
+- We used `dbt init --skip-profile-setup <our_proj_name>`. Presumption that we already have `profiles.yml`.
+- `dbt debug` will identify issues with project files and environment
+- `profiles.yml` is for local development
+  - `profiles.yml` should be added to `gitignore` or in our case vault.
+  - `profiles.yml` for this _demo_ purposes is copied into default location`airbnb/profiles.yml`
+
 - There was a blocker that connection error was given but that was because we didn't have `profiles.yml` inside our working directory
 
 ```yaml
@@ -50,7 +53,7 @@ airbnb:
 
 ```yaml
 
-name: 'airbnb' #looks into the profiles.yml
+name: 'airbnb' #looks into the profiles.yml top line
 version: '1.0.0' #doesn't matter too much?
 profile: 'airbnb'
 
@@ -87,7 +90,6 @@ models:
 | column       | meaning                           |
 | ------------ | --------------------------------- |
 | is_superhost | hosts that have very high reviews |
-|              |                                   |
 
 ## raw_reviews
 
@@ -95,8 +97,6 @@ models:
 | ------------- | ------------------------------------------------------------ |
 | reviewer_name | who is reviewing this listing                                |
 | sentiment     | sentiment analytics of the customer who left the review that airbnb listing |
-
-
 
 ## raw_listings
 
@@ -106,13 +106,11 @@ models:
 | room_type      | what kind of room is being rented?             |
 | host_id        | who is hosting this place?                     |
 
-
-
 # Understand the data flow
 
-## what we are building?
+## What we are building?
 
-* three input tables
+* **three input tables**
 * src is source layer. These are prefixed with `src`
 * dimension and fact tables
 * external tables to <u>be sent to snowflake with dbt</u>
@@ -135,7 +133,7 @@ models:
 
 ## # Creating our first model
 
-* cte is standard practice for our for input sources
+* <u>cte is standard practice for our for input sources</u>
 * models can be organised as you like
 * by default all our models will be views
 * `dbt run` will check and apply changes automatically. This is the proof
@@ -147,25 +145,29 @@ models:
 ```
 
 * We literally created our first src_listing model in snowflake just like that!
-* The real point of referring to table itself? 
-  * Signifies a transformation step
-  * Only need to change in CTE definition if source table changes instead of hunting every occurrence of source name. That would indeed be a big pain.
+
+  
+
+  # The real point of referring to table itself?
+
+* Signifies a transformation step
+* Only need to change in CTE definition if source table changes instead of hunting every occurrence of source name. That would indeed be a big pain.
 
 # Materializations
 
 * View
   * Lightweight
-  * Don't want to recreate table at every execution
+  * <u>Don't want to recreate table</u> at every execution
   * View is just a select which is executed behind the hood
 * Table
-  * Every time dbt flow is executed the table is recreated
+  * Every time dbt flow is executed the <u>table is recreated</u>
   * Transformed data is there
 * Incremental:
-  * Still table but for event data e.g. reviews
+  * Still table but for <u>event data</u> e.g. reviews
   * Avoids recreating new table but ingests new data
 * Ephemeral (CTE)
-  * Converted to CTE in downstream model
-  * It won't be in data warehouse per say
+  * <u>Converted to CTE</u> in downstream model
+  * It <u>won't be in data warehouse per say</u>
   * This is intermediate > not published or public to warehouse
 
 # Core layer

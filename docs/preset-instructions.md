@@ -1,3 +1,17 @@
+
+
+# My secrets
+
+# 
+
+```bash
+#snowflake
+ABDUL1337
+abdulwasay@myyahoo.com
+https://umgjozl-bt58923.snowflakecomputing.com
+J3Y6pTGu7Gf7pmx
+```
+
 # Preset Instructions
 
 ## SQLAlchemy URL

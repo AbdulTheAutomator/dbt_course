@@ -30,7 +30,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 # directory as views. These settings can be overridden in the individual model
 # files using the `{{ config(...) }}` macro.
 models:
-  airbnb:
-    # Config indicated by + and applies to all files under models/example/
-    example:
-      +materialized: view
+  airbnb: #name of my project under which analyses, macros, tests, seeds, models etc. will be created
+    #this was created during dbt init for a quick start guide
+    example: #referes to model example under models/example
+      +materialized: view #build as database views. can be set directly in model file too
