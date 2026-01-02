@@ -1,5 +1,5 @@
 WITH src_listings as (
-    SELECT * FROM {{REF('src_listings')}} --substituting the template tag
+    SELECT * FROM {{ref('src_listings')}} --substituting the template tag
 )
 
 SELECT

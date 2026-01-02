@@ -32,5 +32,6 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   airbnb: #name of my project under which analyses, macros, tests, seeds, models etc. will be created
     #this was created during dbt init for a quick start guide
-    example: #referes to model example under models/example
-      +materialized: view #build as database views. can be set directly in model file too
+      +materialized: view #materialized as a view by default
+      dim:
+        +materialized: table #materialized as a table. because cleansed data is queried often
